@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Main {
-    public static final String FILE_NAME = "600_01";
+    public static final String FILE_NAME = "test";
     public static final String TEST_FILE = "Files/" + FILE_NAME;
     public static final String SEQ_FILE = "Sequences/" + FILE_NAME +".seq";
     private static Data myData;
@@ -52,9 +52,12 @@ public class Main {
             File seqFile = new File(SEQ_FILE);
             Scanner scanner1 = new Scanner(seqFile);
             String seq = scanner1.nextLine();
-            Greedy greedy = new Greedy(myData);
-            greedy.greedyAlgorithm();
-            System.out.println("Score: " + Copute(seq,greedy.getResult()));
+            Greedy greedy = new Greedy(myData,3);
+            for(int i = 0; i < 10; i++){
+                greedy.greedyAlgorithm();
+                System.out.println("Score: " + Copute(seq,greedy.getResult()));
+            }
+
         }catch (FileNotFoundException e){
             System.out.println(e.getMessage());
         }
