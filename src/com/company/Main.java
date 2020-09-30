@@ -62,7 +62,10 @@ public class Main {
             vertices.forEach((vertex -> vertex.findNext(Main.vertices)));
             File seqFile = new File(SEQ_FILE);
             Scanner scanner1 = new Scanner(seqFile);
+            Greedy greedy = new Greedy(myData,scanner1.nextLine().length());
+            String greedyResult = greedy.greedyAlgorithm();
 
+            System.out.println("Found solution:" + greedyResult);
 
         }catch (FileNotFoundException e){
             System.out.println(e.getMessage());
