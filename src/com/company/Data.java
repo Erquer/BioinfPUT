@@ -1,10 +1,13 @@
 package com.company;
 
+import java.util.List;
 import java.util.Map;
 
 public class Data {
     private int length;
     private int numberOfNucleotides;
+
+    public List<Vertex> vertices;
 
     public Map<Integer, String> getOlinucleotides() {
         return olinucleotides;

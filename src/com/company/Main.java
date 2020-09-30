@@ -9,17 +9,26 @@ public class Main {
     public static final String TEST_FILE = "Files/" + FILE_NAME;
     public static final String SEQ_FILE = "Sequences/" + FILE_NAME +".seq";
     private static Data myData;
+    private static List<Vertex> vertices;
+
+    public static List<Vertex> getVertices() {
+        return vertices;
+    }
+
     private static void readData(Scanner scanner){
         List<String> lines = new ArrayList<>();
+        vertices = new ArrayList<>();
         while(scanner.hasNextLine()){
             lines.add(scanner.nextLine());
         }
         Map<Integer, String > myOcli = new HashMap<>();
         for(int i = 2; i < lines.size(); i++){
             myOcli.put(i-2, lines.get(i));
+            vertices.add(new Vertex(i-2,lines.get(i)));
         }
         myData = new Data(Integer.parseInt(lines.get(0)), Integer.parseInt(lines.get(1)),myOcli);
     }
+
     public static int Copute(String a, String b){
 
        int aInt = a.length();
@@ -49,14 +58,11 @@ public class Main {
             Scanner scanner = new Scanner(dataFile);
             readData(scanner);
             //myData.getOlinucleotides().forEach((integer, s) -> System.out.println("id: "+ integer+"; string: " + s));
+            vertices.forEach((i)-> System.out.println(i.getId() + " " + i.getMyCode()));
+            vertices.forEach((vertex -> vertex.findNext(Main.vertices)));
             File seqFile = new File(SEQ_FILE);
             Scanner scanner1 = new Scanner(seqFile);
-            String seq = scanner1.nextLine();
-            Greedy greedy = new Greedy(myData,3);
-            for(int i = 0; i < 10; i++){
-                greedy.greedyAlgorithm();
-                System.out.println("Score: " + Copute(seq,greedy.getResult()));
-            }
+
 
         }catch (FileNotFoundException e){
             System.out.println(e.getMessage());
