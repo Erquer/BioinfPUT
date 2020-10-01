@@ -23,8 +23,9 @@ public class Greedy {
     private void useNextVertex(){
 
     }
-    public String greedyAlgorithm(){
+    public Pair greedyAlgorithm(){
         Vertex nextVertex;
+        List<List<Integer>> tempUsed = new ArrayList<>();
         //start algorithm with first vertex of the list
         Vertex actualVertex = Main.getVertices().get(0);
         actualVertex.setUsed(true);
@@ -37,6 +38,7 @@ public class Greedy {
         for(int i = 1; i < Main.getVertices().size(); i++)
         {
 
+
             //go as deep as you can find next vertex
             while((nextVertex= actualVertex.chooseNextVertex()) != null){
                 nextVertex.setPreviousId(actualVertex.getId());
@@ -47,7 +49,7 @@ public class Greedy {
                 if(nextVertex.chooseNextVertex() == null){
                     //all of the vertices are used, we found perfect solution
                     if(used.size() == Main.getVertices().size()){
-                        return builder.toString();
+                        return new Pair(builder.toString(),used);
                     }
                 }
                 //make actual next vertex we chose
@@ -64,7 +66,14 @@ public class Greedy {
             for(int j = 0; j < used.size(); j++){
                 Main.getVertices().get(used.get(j)).setUsed(false);
             }
-            //clear used vertices in interation
+            //clear used vertices in interation and make copy in tempUsed list.
+            tempUsed.add(List.copyOf(used));
+//            tempUsed.forEach((list)-> {
+//                list.forEach((k) ->
+//                        System.out.print(k + " ")
+//            );
+//                System.out.println();
+//            });
             used.clear();
             //set new actual vertex from the list
             actualVertex = Main.getVertices().get(i);
@@ -80,9 +89,17 @@ public class Greedy {
             if(s.length() > maxLength.get()){
                 maxLength.set(s.length());
                 longestIndex.set(i);
+                System.out.println("New longest solution: " + s + " with id: " + i.toString());
             }
         });
-        result = resultsFound.get(longestIndex);
-        return result;
+        result = resultsFound.get(longestIndex.get());
+        int i = 0;
+        for(int j = 0; j < tempUsed.size(); j++){
+            //if ID of best starting vertex equals first used vertex
+            if(longestIndex.get() == tempUsed.get(j).get(tempUsed.get(j).size()-1) ){
+                i = j;
+            }
+        }
+        return new Pair(result, tempUsed.get(i));
     }
 }
