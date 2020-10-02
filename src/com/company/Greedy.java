@@ -4,16 +4,18 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Greedy {
-    private final Data toFind;
+
     private String result;
     //provide information about order of used nucleotides
     private final List<Integer> used = new ArrayList<>();
-    private Map<Integer,String > resultsFound = new HashMap<>();
-    private final int stringLength;
+    private final Map<Integer,String > resultsFound = new HashMap<>();
 
-    public Greedy(Data toFind, int stringLength) {
-        this.toFind = toFind;
-        this.stringLength = stringLength;
+    public Map<Integer, List<Vertex>> getPartialSolutions() {
+        return partialSolutions;
+    }
+    private final Map<Integer, List<Vertex>> partialSolutions = new HashMap<>();
+    public Greedy() {
+
     }
 
     public String getResult() {
@@ -26,16 +28,17 @@ public class Greedy {
     public Pair greedyAlgorithm(){
         Vertex nextVertex;
         List<List<Integer>> tempUsed = new ArrayList<>();
+        List<Vertex> iterationSolution = new ArrayList<>();
         //start algorithm with first vertex of the list
         Vertex actualVertex = Main.getVertices().get(0);
         actualVertex.setUsed(true);
         used.add(actualVertex.getId());
-
+        iterationSolution.add(actualVertex);
         String tempResult;
         //for every vertex find solution.
         StringBuilder builder = new StringBuilder();
         builder.append(actualVertex.getMyCode());
-        for(int i = 1; i < Main.getVertices().size(); i++)
+        for(int i = 0; i < Main.getVertices().size(); i++)
         {
 
 
@@ -45,6 +48,7 @@ public class Greedy {
                 nextVertex.setUsed(true);
                 builder.append(nextVertex.getMyCode().substring(nextVertex.getMyCode().length()-1));
                 used.add(nextVertex.getId());
+                iterationSolution.add(nextVertex);
                 //if there is a dead end
                 if(nextVertex.chooseNextVertex() == null){
                     //all of the vertices are used, we found perfect solution
@@ -53,6 +57,7 @@ public class Greedy {
                     }
                 }
                 //make actual next vertex we chose
+
                 actualVertex = nextVertex;
             }
             // assign to tempResult found solution in this iteration
@@ -63,9 +68,11 @@ public class Greedy {
             //put new restult into map, where integer is starting vertex id and string the result of comparison.
             resultsFound.put(actualVertex.getId(), tempResult);
             //set all used vertices to false for next iteration.
-            for(int j = 0; j < used.size(); j++){
-                Main.getVertices().get(used.get(j)).setUsed(false);
+            for (Integer integer : used) {
+                Main.getVertices().get(integer).setUsed(false);
             }
+            partialSolutions.put(i, List.copyOf(iterationSolution));
+            iterationSolution.clear();
             //clear used vertices in interation and make copy in tempUsed list.
             tempUsed.add(List.copyOf(used));
 //            tempUsed.forEach((list)-> {

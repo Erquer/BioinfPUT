@@ -8,7 +8,7 @@ public class Main {
     public static final String FILE_NAME = "600_01";
     public static final String TEST_FILE = "Files/" + FILE_NAME;
     public static final String SEQ_FILE = "Sequences/" + FILE_NAME + ".seq";
-    private static Data myData;
+    public static Greedy greedy = new Greedy();
     private static List<Vertex> vertices;
 
     public static List<Vertex> getVertices() {
@@ -26,7 +26,7 @@ public class Main {
             myOcli.put(i - 2, lines.get(i));
             vertices.add(new Vertex(i - 2, lines.get(i)));
         }
-        myData = new Data(Integer.parseInt(lines.get(0)), Integer.parseInt(lines.get(1)), myOcli);
+
     }
 
     public static int Copute(String a, String b) {
@@ -62,13 +62,14 @@ public class Main {
             vertices.forEach((vertex -> vertex.findNext(Main.vertices)));
             File seqFile = new File(SEQ_FILE);
             Scanner scanner1 = new Scanner(seqFile);
-            Greedy greedy = new Greedy(myData, scanner1.nextLine().length());
             Pair greedyResult = greedy.greedyAlgorithm();
 
             System.out.println("Found solution with lentgh " + greedyResult.getSolution().length() + ": " + greedyResult.getSolution());
             System.out.print("Used vertices with size = "+ greedyResult.getUsedOcli().size() +": ");
             greedyResult.getUsedOcli().forEach((i) -> System.out.print(i + "-> "));
             System.out.println();
+            Generic geretic = new Generic(greedyResult);
+            geretic.genericAlgorithm();
 
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
