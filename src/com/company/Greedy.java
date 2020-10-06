@@ -9,6 +9,8 @@ public class Greedy {
     //provide information about order of used nucleotides
     private final List<Integer> used = new ArrayList<>();
     private final Map<Integer,String > resultsFound = new HashMap<>();
+    private Vertex previousVertex;
+
 
     public Map<Integer, List<Vertex>> getPartialSolutions() {
         return partialSolutions;
@@ -54,6 +56,13 @@ public class Greedy {
                     //all of the vertices are used, we found perfect solution
                     if(used.size() == Main.getVertices().size()){
                         return new Pair(builder.toString(),used);
+                    }else{
+                        //check if previous vertex has another path to check.
+                        if(previousVertex.chooseNextVertex() != null){
+                            //there is another
+                        }else{
+                            
+                        }
                     }
                 }
                 //make actual next vertex we chose
